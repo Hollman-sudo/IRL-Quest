@@ -2,6 +2,7 @@
 from personaje import mostrar_personaje, completar_mision, ganar_oro, perder_vida, crear_personaje
 from misiones import crear_mision_diaria
 from misiones_principales import crear_mision_principal
+from eventos import seleccionar_monstruo_aleatorio
 
 misiones_principales = []
 misiones_diarias = []
@@ -182,7 +183,50 @@ def main():
                 
 ####################################################################################################       
         elif opcion == 4:
-            print("Eventos aleatorios - ")
+            monstruo = seleccionar_monstruo_aleatorio()
+            print(f"\n¡Ha aparecido un {monstruo['nombre']} (Rango {monstruo['rango']})!")
+            print(f"Vida del monstruo: {monstruo['vida_max']}")
+            print(f"Condición para golpear: {monstruo['condicion']}")
+            print("Escribe '1' para luchar (cumplir la condición), '2' para huir.\n")
+            
+            vida_monstruo = monstruo['vida_max']
+            en_combate = True
+            
+            while en_combate and personaje["Vivo:"]:
+                print(f"\nTu vida: {personaje['Vida:']} | Vida monstruo: {vida_monstruo}")
+                accion = input("¿[1]Luchar / [2]Huir? ")
+                
+                if accion == '2':
+                    print("Has huido. Pierdes 10 de vida.")
+                    perder_vida(personaje, 10)
+                    en_combate = False
+                elif accion == '1':
+                    # Aplicar daño al monstruo
+                    vida_monstruo -= monstruo['golpe_usuario']
+                    print(f"¡Golpeas al {monstruo['nombre']}! Le haces {monstruo['golpe_usuario']} de daño.")
+                    
+                    if vida_monstruo <= 0:
+                        print(f"¡Has derrotado al {monstruo['nombre']}!")
+                        # Recompensas
+                        ganar_oro(personaje, monstruo['recompensa_oro'])
+                        completar_mision(personaje, monstruo['recompensa_estadistica'], monstruo['recompensa_puntos'])
+                        print(f"Oro +{monstruo['recompensa_oro']} | {monstruo['recompensa_estadistica']} +{monstruo['recompensa_puntos']}")
+                        en_combate = False
+                    else:
+                        # Monstruo contraataca
+                        perder_vida(personaje, monstruo['ataque_monstruo'])
+                        print(f"El {monstruo['nombre']} te ataca y te quita {monstruo['ataque_monstruo']} de vida.")
+                        if not personaje["Vivo:"]:
+                            print("Has muerto en combate.")
+                            en_combate = False
+                else:
+                    print("Opción no válida. Usa '1' o '2'.")
+            
+            if not personaje["Vivo:"]:
+                print("Tu personaje ha muerto. Reinicia el juego para crear uno nuevo.")
+            
+            
+####################################################################################################             
         elif opcion == 5:
             print("Guardando partida...")
             
