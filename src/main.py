@@ -137,7 +137,7 @@ def main():
                         estadistica += ":"
                     puntos_estadistica = 20
                     oro = 15
-                    dias_limites = int(input("Por favor digite el número de días que que va a durar la misión"))
+                    dias_limites = int(input("Por favor digite el número de días que que va a durar la misión: "))
                     
                     # Creo una variable para meter la información en la función
                     mision = crear_mision_principal(nombre, estadistica, puntos_estadistica, oro, dias_limites)
@@ -186,18 +186,38 @@ def main():
         elif opcion == 5:
             print("Guardando partida...")
             
-            
+####################################################################################################                   
         elif opcion == 6:
-            penalizacion = 10
+            # Procesar misiones diarias
+            penalizacionDiarias = 10
             noCompletadas = 0
             for m in misiones_diarias:
                 if not m["Completado:"]:
-                    perder_vida(personaje, penalizacion)
+                    perder_vida(personaje, penalizacionDiarias)
                     noCompletadas += 1
             for m in misiones_diarias:
                 m["Completado:"] = False
-            print(f"Nuevo días, has perdido {penalizacion * noCompletadas} de vida por {noCompletadas} misiones no completadas.") 
+            print(f"Nuevo días, has perdido {penalizacionDiarias * noCompletadas} de vida por {noCompletadas} misiones no completadas.") 
+            
+            
+            # Procesar misiones principales
+            expiradas = 0
+            # Iterar sobre una copia para poder eliminar mientras recorremos
+            for m in misiones_principales[:]:
+                m["Dias Restantes:"] -= 1
+                if m["Dias Restantes:"] <= 0:
+                    # Penalización grave
+                    perder_vida(personaje, 25)
+                    print(f"La misión principal '{m['Nombre:']}' ha expirado. Pierdes 25  puntos de vida")
+                    misiones_principales.remove(m)
+                    expiradas += 1
+            if expiradas > 0:
+                print(f"Se expiraron {expiradas} misiones principales.")
+            else:
+                print("No expiró ninguna misión principal.")
+                
             print("!EL DÍA HA SIDO REINICIADO CORRECTAMENTE")   
+####################################################################################################             
                 
                 
         elif opcion == 7:
