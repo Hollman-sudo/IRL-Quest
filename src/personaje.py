@@ -35,3 +35,9 @@ def perder_vida(personaje,perdida):
     if personaje["Vida:"] <= 0:
         personaje["Vivo"] = False
     return personaje
+
+# Función para mostrar el personaje:
+def mostrar_personaje(personaje):
+    for clave, valor in personaje.items():
+        print(f"{clave:15} : {valor}")
+    
