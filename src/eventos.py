@@ -1,9 +1,6 @@
-# Funció para crear eventos aleatorios
-def crear_evento(nombre, rango, vida, condicion, golpe):
-    return {
-        "Nombre:" : nombre,
-        "Rango:" : rango,
-        "Vida:" : vida,
-        "Condición Para Vencerlo:" : condicion,
-        "Luchar:" : golpe
-    }
+import random
+from monstruos import monstruos
+
+def seleccionar_monstruo_aleatorio():
+    #Devuelve un monstruo aleatorio de la lista predefinida.
+    return random.choice(monstruos)
