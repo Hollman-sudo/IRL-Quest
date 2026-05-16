@@ -1,9 +1,9 @@
 # Importo la función que acabo de crear para crear misiones diarias
-from misiones import crear_mision_diaria
+from personaje import mostrar_personaje, completar_mision, ganar_oro, perder_vida, crear_personaje
 
 def main():
-    # Crear personaje 
-    # personaje = crear_personaje("Aventurero")
+    misiones_diarias = []
+    personaje = crear_personaje("Aventurero")
     
     ejecutando = True
     
@@ -25,11 +25,31 @@ def main():
             print("ERROR: Ingresa un número válido.")
             continue
         
+        # Si elige 1, muestra el personaje.
         if opcion == 1:
-            # Llamar a función que muestra el personaje
-            print("Mostrando personaje...")  
+            mostrar_personaje()  
+            
         elif opcion == 2:
-            print("Misiones diarias - ")
+            en_misiones = True
+            if en_misiones == True:
+                while en_misiones:
+                    print("\n" + "="*50)
+                    print("            MENÚ MISIONES")
+                    print("="*50) 
+                    print("[1] Crear Misión.")
+                    print("[2] Mostrar Misiones sin Terminar.")
+                    print("[3] Completar Misión.")
+                    print("[4] Volver al menú principal.")
+                   
+                    try:
+                        eleccion = int(input("\nDigite su elección: "))
+                    except ValueError:
+                       print("ERROR: Ingrese un número válido.")
+                       
+                    if eleccion == 4:
+                        en_misiones = False
+                        
+                   
         elif opcion == 3:
             print("Misiones principales - ")
         elif opcion == 4:
