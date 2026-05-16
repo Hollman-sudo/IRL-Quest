@@ -75,7 +75,7 @@ def main():
                     else:
                         for i, m in enumerate(misiones_diarias):
                             if not m["Completado:"]:
-                               print(f"{i} - {m['Nombre:']} | {m['Estadistica:']} + {m['Puntos de Estadistica:']} | {m['Oro:']}")   
+                               print(f"{i} - {m['Nombre:']} | {m['Estadistica:']} + {m['Puntos de Estadistica:']} | Oro: {m['Oro:']}")   
                             else:
                                 print(f"{i} - {m['Nombre:']} | (COMPLETADA HOY)")
                             
