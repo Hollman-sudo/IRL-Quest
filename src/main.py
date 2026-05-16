@@ -1,8 +1,8 @@
-# Importaciones (después las agregarás)
-# from personaje import crear_personaje, mostrar_personaje, etc.
+# Importo la función que acabo de crear para crear misiones diarias
+from misiones import crear_mision_diaria
 
 def main():
-    # Crear personaje (por ahora con nombre fijo)
+    # Crear personaje 
     # personaje = crear_personaje("Aventurero")
     
     ejecutando = True
