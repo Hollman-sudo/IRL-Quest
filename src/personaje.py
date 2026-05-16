@@ -5,6 +5,7 @@ def crear_personaje(nombre):
         "Vida:": 100,
         "Vivo:": True,
         "Rango:": "F",
+        "Oro:": 0,
         "Fuerza:": 0,
         "Velocidad:": 0,                 
         "Defensa:": 0,                     
@@ -21,6 +22,11 @@ def crear_personaje(nombre):
 # Función que da puntos de estadistica despues de completar una misión:
 def completar_mision(personaje,estadistica,puntos):
     personaje[estadistica] = personaje[estadistica] + puntos
+    return personaje
+
+# Función para ganar oro
+def ganar_oro(personaje, cantidad):
+    personaje["Oro:"] = personaje["Oro:"] + cantidad
     return personaje
 
 # Función para quitarle vida al personaje:
