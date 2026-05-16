@@ -55,6 +55,10 @@ def main():
                 if eleccion == 1:
                     nombre = input("Digite el nombre de la misión: ")
                     estadistica = input("Digite el nombre de la estadistica que va a ganar puntos: ")
+                    estadistica = input("Digite el nombre de la estadistica que va a ganar puntos: ")
+                    # Agregar dos puntos si no los tiene
+                    if not estadistica.endswith(":"):
+                        estadistica += ":"
                     puntos_estadistica = int(input("Digite los puntos que va a ganar por completar la misión: "))
                     oro = int(input("Digite el oro que va a ganar por completar la misión: "))
                     
