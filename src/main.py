@@ -2,6 +2,7 @@
 from personaje import mostrar_personaje, completar_mision, ganar_oro, perder_vida, crear_personaje
 from misiones import crear_mision_diaria
 from misiones_principales import crear_mision_principal
+from eventos import seleccionar_monstruo_aleatorio
 
 misiones_principales = []
 misiones_diarias = []
@@ -12,6 +13,9 @@ def main():
      # Menú para que el usuario interactue con la app   
     ejecutando = True
     while ejecutando:
+        if not personaje["Vivo:"]:
+            print("Tu personaje está muerto. Crea uno nuevo.")
+            ejecutando = False
         print("\n" + "="*50)
         print("            MENÚ PRINCIPAL")
         print("="*50)
@@ -137,7 +141,7 @@ def main():
                         estadistica += ":"
                     puntos_estadistica = 20
                     oro = 15
-                    dias_limites = int(input("Por favor digite el número de días que que va a durar la misión"))
+                    dias_limites = int(input("Por favor digite el número de días que que va a durar la misión: "))
                     
                     # Creo una variable para meter la información en la función
                     mision = crear_mision_principal(nombre, estadistica, puntos_estadistica, oro, dias_limites)
@@ -182,22 +186,85 @@ def main():
                 
 ####################################################################################################       
         elif opcion == 4:
-            print("Eventos aleatorios - ")
+            monstruo = seleccionar_monstruo_aleatorio()
+            print(f"\n¡Ha aparecido un {monstruo['nombre']} (Rango {monstruo['rango']})!")
+            print(f"Vida del monstruo: {monstruo['vida_max']}")
+            print(f"Condición para golpear: {monstruo['condicion']}")
+            print("Escribe '1' para luchar (cumplir la condición), '2' para huir.\n")
+            
+            vida_monstruo = monstruo['vida_max']
+            en_combate = True
+            
+            while en_combate and personaje["Vivo:"]:
+                print(f"\nTu vida: {personaje['Vida:']} | Vida monstruo: {vida_monstruo}")
+                accion = input("¿[1]Luchar / [2]Huir? ")
+                
+                if accion == '2':
+                    print("Has huido. Pierdes 10 de vida.")
+                    perder_vida(personaje, 10)
+                    en_combate = False
+                elif accion == '1':
+                    # Aplicar daño al monstruo
+                    vida_monstruo -= monstruo['golpe_usuario']
+                    print(f"¡Golpeas al {monstruo['nombre']}! Le haces {monstruo['golpe_usuario']} de daño.")
+                    
+                    if vida_monstruo <= 0:
+                        print(f"¡Has derrotado al {monstruo['nombre']}!")
+                        # Recompensas
+                        ganar_oro(personaje, monstruo['recompensa_oro'])
+                        completar_mision(personaje, monstruo['recompensa_estadistica'], monstruo['recompensa_puntos'])
+                        print(f"Oro +{monstruo['recompensa_oro']} | {monstruo['recompensa_estadistica']} +{monstruo['recompensa_puntos']}")
+                        en_combate = False
+                    else:
+                        # Monstruo contraataca
+                        perder_vida(personaje, monstruo['ataque_monstruo'])
+                        print(f"El {monstruo['nombre']} te ataca y te quita {monstruo['ataque_monstruo']} de vida.")
+                        if not personaje["Vivo:"]:
+                            print("Has muerto en combate.")
+                            en_combate = False
+                else:
+                    print("Opción no válida. Usa '1' o '2'.")
+            
+            if not personaje["Vivo:"]:
+                print("Tu personaje ha muerto. Reinicia el juego para crear uno nuevo.")
+            
+            
+####################################################################################################             
         elif opcion == 5:
             print("Guardando partida...")
             
-            
+####################################################################################################                   
         elif opcion == 6:
-            penalizacion = 10
+            # Procesar misiones diarias
+            penalizacionDiarias = 10
             noCompletadas = 0
             for m in misiones_diarias:
                 if not m["Completado:"]:
-                    perder_vida(personaje, penalizacion)
+                    perder_vida(personaje, penalizacionDiarias)
                     noCompletadas += 1
             for m in misiones_diarias:
                 m["Completado:"] = False
-            print(f"Nuevo días, has perdido {penalizacion * noCompletadas} de vida por {noCompletadas} misiones no completadas.") 
+            print(f"Nuevo días, has perdido {penalizacionDiarias * noCompletadas} de vida por {noCompletadas} misiones no completadas.") 
+            
+            
+            # Procesar misiones principales
+            expiradas = 0
+            # Iterar sobre una copia para poder eliminar mientras recorremos
+            for m in misiones_principales[:]:
+                m["Dias Restantes:"] -= 1
+                if m["Dias Restantes:"] <= 0:
+                    # Penalización grave
+                    perder_vida(personaje, 25)
+                    print(f"La misión principal '{m['Nombre:']}' ha expirado. Pierdes 25  puntos de vida")
+                    misiones_principales.remove(m)
+                    expiradas += 1
+            if expiradas > 0:
+                print(f"Se expiraron {expiradas} misiones principales.")
+            else:
+                print("No expiró ninguna misión principal.")
+                
             print("!EL DÍA HA SIDO REINICIADO CORRECTAMENTE")   
+####################################################################################################             
                 
                 
         elif opcion == 7:
