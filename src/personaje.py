@@ -22,6 +22,7 @@ def crear_personaje(nombre):
 # Función que da puntos de estadistica despues de completar una misión:
 def completar_mision(personaje,estadistica,puntos):
     personaje[estadistica] = personaje[estadistica] + puntos
+    actualizar_rango(personaje)
     return personaje
 
 # Función para ganar oro
@@ -40,4 +41,41 @@ def perder_vida(personaje,perdida):
 def mostrar_personaje(personaje):
     for clave, valor in personaje.items():
         print(f"{clave:15} : {valor}")
+        
+# Función para calcular el rango del personaje
+def actualizar_rango(personaje):
+    """
+    Calcula el rango del personaje según la suma total de sus estadísticas.
+    Actualiza la clave "Rango:" en el diccionario del personaje.
+    """
+    # Lista de todas las estadísticas que se suman (excluyendo Vida, Oro, Vivo, etc.)
+    estadisticas = [
+        "Fuerza:", "Velocidad:", "Defensa:", "Apariencia:", "Estamina:",
+        "Carisma:", "Agilidad:", "Inteligencia:", "Flexibilidad:",
+        "Determinación:", "Reflejos:"
+    ]
+    
+    # Sumar todos los valores
+    total = 0
+    for stat in estadisticas:
+        total += personaje.get(stat, 0)  # get() por si falta alguna clave
+    
+    # Determinar rango según el total
+    if total <= 20:
+        rango = "F"
+    elif total <= 40:
+        rango = "E"
+    elif total <= 60:
+        rango = "D"
+    elif total <= 80:
+        rango = "C"
+    elif total <= 100:
+        rango = "B"
+    elif total <= 120:
+        rango = "A"
+    else:
+        rango = "S"
+    
+    # Actualizar el rango en el personaje
+    personaje["Rango:"] = rango
     
