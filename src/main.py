@@ -5,21 +5,24 @@ from misiones_principales import crear_mision_principal
 from eventos import seleccionar_monstruo_aleatorio
 from utils import cargar_partida, guardar_partida
 
-
-misiones_principales = []
-misiones_diarias = []
-personaje = crear_personaje("Aventurero")
-
 def main():
     # Cargar partida al iniciar
     personaje, misiones_diarias, misiones_principales = cargar_partida()
-     
-     # Menú para que el usuario interactue con la app   
+
+    # Si no hay partida guardada, crear personaje nuevo
+    if personaje is None:
+        nombre = input("¡Bienvenido! ¿Cómo se llama tu aventurero? ")
+        personaje = crear_personaje(nombre)
+        print(f"¡{nombre} ha sido creado! Comienza tu aventura.")
+
+    # Si el personaje está muerto, no se puede continuar
+    if not personaje["Vivo:"]:
+        print("Tu personaje está muerto. No se puede continuar.")
+        return
+
+    # Menú para que el usuario interactue con la app   
     ejecutando = True
     while ejecutando:
-        if not personaje["Vivo:"]:
-            print("Tu personaje está muerto. Crea uno nuevo.")
-            ejecutando = False
         print("\n" + "="*50)
         print("            MENÚ PRINCIPAL")
         print("="*50)
@@ -45,7 +48,6 @@ def main():
             mostrar_personaje(personaje)  
 ####################################################################################################
 
-
         # Si elige 2 en el menú principal, mostramos el menu de opciones de las misiones diarias   
         elif opcion == 2:
             en_misiones = True
@@ -62,6 +64,7 @@ def main():
                     eleccion = int(input("\nDigite su elección: "))
                 except ValueError:
                     print("ERROR: Ingrese un número válido.")
+                    continue
                 #Si el usuario digita 1, le pedimos la información para crear la misión      
                 if eleccion == 1:
                     nombre = input("Digite el nombre de la misión: ")
@@ -100,17 +103,16 @@ def main():
                     try:
                         indiceMision = int(input("Ingrese el indice de la misión a completar: "))
                         
-                        if 0 <= indiceMision <= len(misiones_diarias):
+                        if 0 <= indiceMision < len(misiones_diarias):
                             mision = misiones_diarias[indiceMision]
                             # Le damos las recompensas al personaje
-                            # Llamamos a la función de completar misiones para dar la recompensa
                             completar_mision(personaje, mision['Estadistica:'], mision['Puntos de Estadistica:'])
                             mision['Completado:'] = True
-                            # Llamamos a la función para ganar oro
                             ganar_oro(personaje, mision["Oro:"])
                             
                             print("!Misión completada con exito!")
-                            
+                        else:
+                            print("Índice no válido.")
                     except ValueError:
                         print("ERROR: Debe ingresar un número.")
                     
@@ -136,30 +138,30 @@ def main():
                     eleccion = int(input("\nDigite su elección: "))
                 except ValueError:
                     print("ERROR: Ingrese un número válido.")
+                    continue
                 #Si el usuario digita 1, le pedimos la información para crear la misión      
                 if eleccion == 1:
                     nombre = input("Digite el nombre de la misión: ")
                     estadistica = input("Digite el nombre de la estadistica que va a ganar puntos: ")
-                    # Agregar dos puntos si no los tiene
                     if not estadistica.endswith(":"):
                         estadistica += ":"
                     puntos_estadistica = 20
                     oro = 15
-                    dias_limites = int(input("Por favor digite el número de días que que va a durar la misión: "))
+                    dias_limites = int(input("Por favor digite el número de días que va a durar la misión: "))
                     
-                    # Creo una variable para meter la información en la función
                     mision = crear_mision_principal(nombre, estadistica, puntos_estadistica, oro, dias_limites)
-                    # Agregamos la mision principal
                     misiones_principales.append(mision)
                     print("!Misión creada con exito!")
                     
-                    # Si el usuario digita 2,  le mostramos todas las misiones prinxcipales que no han sido completadas
                 elif eleccion == 2:
-                    for i, m in enumerate(misiones_principales):
-                        if not m["Completado:"]:
-                            print(f"{i} - {m['Nombre:']} | {m['Estadistica:']} + {m['Puntos de Estadistica:']} | Oro: {m['Oro:']} | Tiempo Restante: {m['Dias Restantes:']}")   
-                        else:
-                            print(f"{i} - {m['Nombre:']} | (COMPLETADA HOY)")
+                    if not misiones_principales:
+                        print("No tiene misiones pendientes.")
+                    else:
+                        for i, m in enumerate(misiones_principales):
+                            if not m["Completado:"]:
+                                print(f"{i} - {m['Nombre:']} | {m['Estadistica:']} + {m['Puntos de Estadistica:']} | Oro: {m['Oro:']} | Tiempo Restante: {m['Dias restantes:']}")   
+                            else:
+                                print(f"{i} - {m['Nombre:']} | (COMPLETADA HOY)")
                             
                 elif eleccion == 3:
                     if not misiones_principales:
@@ -171,7 +173,6 @@ def main():
                         indiceMision = int(input("Número de misión a completar: "))
                         if 0 <= indiceMision < len(misiones_principales):
                             mision = misiones_principales[indiceMision]
-                            # Aplicar recompensas
                             completar_mision(personaje, mision['Estadistica:'], mision['Puntos de Estadistica:'])
                             ganar_oro(personaje, mision['Oro:'])
                             del misiones_principales[indiceMision]
@@ -180,7 +181,6 @@ def main():
                             print("Índice no válido.")
                     except ValueError:
                         print("Debe ingresar un número.")
-
                     
                 elif eleccion == 4:
                     en_misiones = False
@@ -208,19 +208,16 @@ def main():
                     perder_vida(personaje, 10)
                     en_combate = False
                 elif accion == '1':
-                    # Aplicar daño al monstruo
                     vida_monstruo -= monstruo['golpe_usuario']
                     print(f"¡Golpeas al {monstruo['nombre']}! Le haces {monstruo['golpe_usuario']} de daño.")
                     
                     if vida_monstruo <= 0:
                         print(f"¡Has derrotado al {monstruo['nombre']}!")
-                        # Recompensas
                         ganar_oro(personaje, monstruo['recompensa_oro'])
                         completar_mision(personaje, monstruo['recompensa_estadistica'], monstruo['recompensa_puntos'])
                         print(f"Oro +{monstruo['recompensa_oro']} | {monstruo['recompensa_estadistica']} +{monstruo['recompensa_puntos']}")
                         en_combate = False
                     else:
-                        # Monstruo contraataca
                         perder_vida(personaje, monstruo['ataque_monstruo'])
                         print(f"El {monstruo['nombre']} te ataca y te quita {monstruo['ataque_monstruo']} de vida.")
                         if not personaje["Vivo:"]:
@@ -248,18 +245,15 @@ def main():
                     noCompletadas += 1
             for m in misiones_diarias:
                 m["Completado:"] = False
-            print(f"Nuevo días, has perdido {penalizacionDiarias * noCompletadas} de vida por {noCompletadas} misiones no completadas.") 
-            
+            print(f"Nuevo día, has perdido {penalizacionDiarias * noCompletadas} de vida por {noCompletadas} misiones no completadas.") 
             
             # Procesar misiones principales
             expiradas = 0
-            # Iterar sobre una copia para poder eliminar mientras recorremos
             for m in misiones_principales[:]:
-                m["Dias Restantes:"] -= 1
-                if m["Dias Restantes:"] <= 0:
-                    # Penalización grave
+                m["Dias restantes:"] -= 1
+                if m["Dias restantes:"] <= 0:
                     perder_vida(personaje, 25)
-                    print(f"La misión principal '{m['Nombre:']}' ha expirado. Pierdes 25  puntos de vida")
+                    print(f"La misión principal '{m['Nombre:']}' ha expirado. Pierdes 25 puntos de vida")
                     misiones_principales.remove(m)
                     expiradas += 1
             if expiradas > 0:
@@ -269,7 +263,6 @@ def main():
                 
             print("!EL DÍA HA SIDO REINICIADO CORRECTAMENTE")   
 ####################################################################################################             
-                
                 
         elif opcion == 7:
             print("Ciao")

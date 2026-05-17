@@ -17,6 +17,14 @@
         "Determinación:": 0,
         "Reflejos:": 0
     },
-    "misiones_diarias": [],
+    "misiones_diarias": [
+        {
+            "Nombre:": "Prueba",
+            "Estadistica:": "Fuerza:",
+            "Puntos de Estadistica:": 5,
+            "Oro:": 3,
+            "Completado:": false
+        }
+    ],
     "misiones_principales": []
 }
