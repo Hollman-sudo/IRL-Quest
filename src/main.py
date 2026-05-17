@@ -15,6 +15,9 @@ def main():
      # Menú para que el usuario interactue con la app   
     ejecutando = True
     while ejecutando:
+        if not personaje["Vivo:"]:
+            print("Tu personaje está muerto. Crea uno nuevo.")
+            ejecutando = False
         print("\n" + "="*50)
         print("            MENÚ PRINCIPAL")
         print("="*50)
