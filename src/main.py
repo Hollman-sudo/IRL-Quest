@@ -5,13 +5,14 @@ from misiones_principales import crear_mision_principal
 from eventos import seleccionar_monstruo_aleatorio
 from utils import cargar_partida, guardar_partida
 
-# Cargar partida al iniciar
-personaje, misiones_diarias, misiones_principales = cargar_partida()
+
 misiones_principales = []
 misiones_diarias = []
 personaje = crear_personaje("Aventurero")
 
 def main():
+    # Cargar partida al iniciar
+    personaje, misiones_diarias, misiones_principales = cargar_partida()
      
      # Menú para que el usuario interactue con la app   
     ejecutando = True
@@ -235,7 +236,6 @@ def main():
 ####################################################################################################             
         elif opcion == 5:
             guardar_partida(personaje, misiones_diarias, misiones_principales)
-            print("Guardando partida...")
             
 ####################################################################################################                   
         elif opcion == 6:

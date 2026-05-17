@@ -1,0 +1,22 @@
+{
+    "personaje": {
+        "Nombre:": "Aventurero",
+        "Vida:": 100,
+        "Vivo:": true,
+        "Rango:": "F",
+        "Oro:": 0,
+        "Fuerza:": 0,
+        "Velocidad:": 0,
+        "Defensa:": 0,
+        "Apariencia:": 0,
+        "Estamina:": 0,
+        "Carisma:": 0,
+        "Agilidad:": 0,
+        "Inteligencia:": 0,
+        "Flexibilidad:": 0,
+        "Determinación:": 0,
+        "Reflejos:": 0
+    },
+    "misiones_diarias": [],
+    "misiones_principales": []
+}
