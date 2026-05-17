@@ -3,6 +3,7 @@ from personaje import mostrar_personaje, completar_mision, ganar_oro, perder_vid
 from misiones import crear_mision_diaria
 from misiones_principales import crear_mision_principal
 from eventos import seleccionar_monstruo_aleatorio
+from utils import cargar_partida, guardar_partida
 
 # Cargar partida al iniciar
 personaje, misiones_diarias, misiones_principales = cargar_partida()
