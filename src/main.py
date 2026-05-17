@@ -1,3 +1,22 @@
+# IRL Quest - Sistema de hábitos con mecánicas RPG
+# Copyright (C) 2026  Hollman 
+
+# Este programa es software libre: puedes redistribuirlo y/o modificarlo
+# bajo los términos de la Licencia Pública General de GNU publicada por
+# la Free Software Foundation, ya sea la versión 3 de la Licencia, o
+# (a tu elección) cualquier versión posterior.
+
+# Este programa se distribuye con la esperanza de que sea útil,
+# pero SIN NINGUNA GARANTÍA; sin siquiera la garantía implícita de
+# COMERCIABILIDAD o IDONEIDAD PARA UN PROPÓSITO PARTICULAR. Véase la
+# Licencia Pública General de GNU para más detalles.
+
+# Deberías haber recibido una copia de la Licencia Pública General de GNU
+# junto con este programa. Si no, consulta <https://www.gnu.org/licenses/>.
+
+
+
+
 # Importo las funciones de las demas features
 from personaje import mostrar_personaje, completar_mision, ganar_oro, perder_vida, crear_personaje
 from misiones import crear_mision_diaria
@@ -6,6 +25,9 @@ from eventos import seleccionar_monstruo_aleatorio
 from utils import cargar_partida, guardar_partida
 
 def main():
+    print("IRL Quest Copyright (C) 2026 [Tu Nombre]")
+    print("Este programa viene SIN GARANTÍA ALGUNA; para más detalles, escribe 'show w'.")
+    print("Este es software libre y eres libre de redistribuirlo bajo ciertas condiciones; escribe 'show c' para más detalles.\n")
     # Cargar partida al iniciar
     personaje, misiones_diarias, misiones_principales = cargar_partida()
 

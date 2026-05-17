@@ -1,11 +1,11 @@
 {
     "personaje": {
         "Nombre:": "Aventurero",
-        "Vida:": 100,
+        "Vida:": 64,
         "Vivo:": true,
         "Rango:": "F",
-        "Oro:": 0,
-        "Fuerza:": 0,
+        "Oro:": 43,
+        "Fuerza:": 17,
         "Velocidad:": 0,
         "Defensa:": 0,
         "Apariencia:": 0,
@@ -21,6 +21,13 @@
         {
             "Nombre:": "Prueba",
             "Estadistica:": "Fuerza:",
+            "Puntos de Estadistica:": 5,
+            "Oro:": 3,
+            "Completado:": true
+        },
+        {
+            "Nombre:": "hola allen",
+            "Estadistica:": "Carisma:",
             "Puntos de Estadistica:": 5,
             "Oro:": 3,
             "Completado:": false
